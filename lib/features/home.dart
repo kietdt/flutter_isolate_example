@@ -2,7 +2,6 @@ import 'dart:isolate';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -27,7 +26,11 @@ class MyHomePage extends StatefulWidget {
     for (int i = 0; i < count; i++) {
       sum++;
     }
-    sendPort.send(sum);
+    // cách 1
+    // sendPort.send(sum);
+
+    // cách 2, flutter > 2.15
+    Isolate.exit(sendPort, sum);
   }
 }
 
@@ -123,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     onCalculateLargeNumberIsolateCompute();
     // onCalculateLargeNumberIsolateReceivePort();
 
-    /// ??? -> có ảnh hưởng gì không?
+    /// ??? -> có ảnh hưởng gì không? => không
     // await onSleepSomeSeconds();
   }
 
@@ -154,10 +157,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     updateSum("Calculating with Compute...");
 
     // static function
-    // sum = (await compute(MyHomePage.calculateLarge, count)).toString();
+    sum = (await compute(MyHomePage.calculateLarge, count)).toString();
 
     // function on Top
-    sum = (await compute(calculateLargeOnTop, count)).toString();
+    // sum = (await compute(calculateLargeOnTop, count)).toString();
 
     updateSum(sum);
   }
