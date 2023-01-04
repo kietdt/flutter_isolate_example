@@ -1,4 +1,4 @@
-# flutter_application_1
+# flutter_isolate_demo
 
 A new Flutter project.
 
